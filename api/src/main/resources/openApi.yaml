@@ -1,0 +1,109 @@
+openapi: 3.0.0
+
+info:
+  version: 0.0.1
+  title: TECH - Computers Service
+  description: Spring Boot Computers micro-service.
+
+servers:
+  - url: http://localhost:8080
+    description: Computers Spring Boot micro-service is locally deployed on port 8080.
+
+tags:
+  - name: "Computers"
+  - name: "Databases"
+  - name: "Users"
+  - name: "Brands"
+
+paths:
+  /computers:
+    post:
+      summary: Add Computer.
+      tags:
+        - "Computers"
+      operationId: addComputer
+      requestBody:
+        description: HTTP request body.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Computer"
+      responses:
+        "201":
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Computer"
+        "400":
+          description: BAD REQUEST
+        "401":
+          description: UNAUTHORIZED
+    get:
+      summary: Retrieve Computers.
+      description: HTTP endpoint to get the list of all computers.
+      tags:
+        - "Computers"
+      operationId: getComputers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Computer'
+        "400":
+          description: BAD REQUEST
+        "401":
+          description: UNAUTHORIZED
+
+  /computers/{id}:
+    parameters:
+      - name: id
+        description: Computer ID.
+        schema:
+          type: integer
+          format: int64
+        in: path
+        required: true
+    get:
+      summary: Retrieve Computer by ID.
+      description: HTTP endpoint to get a computer by its ID.
+      tags:
+        - "Computers"
+      operationId: getComputerById
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Computer"
+        "400":
+          description: BAD REQUEST
+        "401":
+          description: UNAUTHORIZED
+
+components:
+  schemas:
+    Computer:
+      description: Computer class.
+      type: object
+      required:
+        - model
+      properties:
+        id:
+          type: integer
+          format: int64
+        model:
+          description: Computer's model.
+          type: string
+        yearProduced:
+          description: Computer's year of production.
+          type: number
+        price:
+          description: Computer's price.
+          type: number
